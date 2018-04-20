@@ -17,8 +17,14 @@ module.exports = {
         if (!userInfo) {
             response.success = false
             response.message = userCode.FAIL_USER_NAME_OR_PASSWORD_ERROR
+            ctx.response.body = response
+        } else {
+            const session = ctx.session
+            session.isLogin = true
+            session.userName = userInfo.name
+            session.userId = userInfo.id
+
+            ctx.redirect('/work')
         }
-        ctx.response.type = 'html'
-        ctx.response.body = response
     }
 }

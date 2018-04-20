@@ -9,6 +9,7 @@ module.exports = {
   entry: {
     'home' : './static/src/pages/home.js',
     'admin': './static/src/pages/admin.js',
+    'work': './static/src/pages/work.js',
     vendor: ['react', 'react-dom', 'whatwg-fetch'],
   },
   output: {
