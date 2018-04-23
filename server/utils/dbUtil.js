@@ -27,6 +27,16 @@ const query = function (sql, params) {
     })
 }
 
+const add = async (tables, values) => {
+    const sql = `
+        INSERT INTO
+            ??
+        SET
+            ?`
+    return await query(sql, [tables, values])
+}
+
 module.exports = {
-    query
+    query,
+    add
 }

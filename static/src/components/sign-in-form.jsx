@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd'
-import { signInApi } from '../api/sign-in'
+import { signInApi, signInForm } from '../api/sign-in'
 
 import 'antd/dist/antd.css'
 
@@ -15,6 +15,7 @@ class loginForm extends Component {
             let result = await signInApi(values)
             if (result && result.success) {
                 message.success('登录成功')
+                signInForm(values)
             } else if (result && result.message) {
                 message.error(result.message)
             }

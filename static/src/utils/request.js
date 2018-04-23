@@ -1,4 +1,5 @@
 import 'whatwg-fetch'
+import { queryToStr } from './stringUtil'
 
 function fetchEvent (options) {
     if (!options) {
@@ -15,20 +16,7 @@ function fetchEvent (options) {
     let _error = null
     
     if (_type === 'GET') {
-        let paramsArr = []
-        
-        for (let key in _data) {
-            if (typeof _data[key] === 'object') {
-                paramsArr.join(`${key}=${JSON.stringify(_data[key])}`)
-            } else {
-                paramsArr.join(`${key}=${_data[key]}`)
-            }
-        }
-        if (_url.includes('?')) {
-            _url = `${_url}&${paramsArr.join('&')}`
-        } else {
-            _url = `${_url}?${paramsArr.join('&')}`
-        }
+        _url = queryToStr(_url, _data)
         fetchParams = Object.assign({}, fetchParams, {headers: new Header()})
     } else {
         fetchParams = Object.assign({}, fetchParams, {headers: {'Content-Type': 'application/json'}, body: JSON.stringify(_data)})
@@ -74,6 +62,26 @@ const request = {
         }
         options.type = 'POST'
         return fetchEvent(options)
+    },
+    form (options) {
+        if (typeof options !== 'object') {
+            return;
+        }
+        let _url = options.url
+        let _data = options.data
+        let _form = document.createElement('form')
+        _form.method = 'POST'
+        _form.action = _url
+
+        for (let key in _data) {
+            let _input = document.createElement('input')
+            _input.type = 'hidden'
+            _input.value = typeof _data[key] === 'object' ? JSON.stringify(_data[key]) : _data[key]
+            _input.name = key
+            _form.appendChild(_input)
+        }
+        document.body.appendChild(_form)
+        _form.submit()
     }
 }
 

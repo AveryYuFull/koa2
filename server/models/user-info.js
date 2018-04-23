@@ -21,5 +21,25 @@ module.exports = {
         } else {
             return null
         }
+    },
+
+    async getExistOne(options) {
+        const sql = `
+            SELECT 
+                name, email 
+            FROM 
+                user_info
+            WHERE
+                name='${options.name}' OR email='${options.email}'`
+        let result = await dbUtils.query(sql)
+        if (Array.isArray(result) && result.length > 0) {
+            return result[0]
+        } else {
+            return null
+        }
+    },
+
+    async registerUser (options) {
+        return await dbUtils.add('user_info', options)
     }
 }
